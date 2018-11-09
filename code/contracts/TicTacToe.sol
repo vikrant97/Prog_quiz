@@ -1,7 +1,8 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.22;
 
 contract TicTacToe {
-	string public board = "000000000";
+	string public board1 = "000000000";
+	bytes32 public board = bytes32(board1);
 	uint32 public gameField = uint32(0);
 	address public challenger;
 	address public opponent;
@@ -28,6 +29,7 @@ contract TicTacToe {
   	}
 
   	function playerMove (uint8 x, uint8 y) public{
+
   		require(winner==0);
   		require(turnCount<=9);
   		require(3*x+y<=8);
@@ -35,10 +37,12 @@ contract TicTacToe {
   		require(board[3*x+y]=="0");
   		require(currentPlayer==msg.sender);
   		require(isopp==1);
-  		string value;
+  		bytes32 value;
+	  	uint index=3*x+y;
   		if(msg.sender==challenger){
-	  		board[3*x+y]="x";
+  			turnCount++;
 	  		value="x";
+	  		board[index]=bytes32(value);
 	  		if(board[0]==value && board[1]==value && board[2]==value){
 	  			winner=1;
 	  		}
@@ -67,31 +71,33 @@ contract TicTacToe {
   		}
   		
   		if(msg.sender==opponent){
-	  		board[3*x+y]="O";
+  			turnCount++;
+	  		uint index=3*x+y;
+	  		board[index]="O";
 	  		value="O";
 	  		if(board[0]==value && board[1]==value && board[2]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[3]==value && board[4]==value && board[5]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[6]==value && board[7]==value && board[8]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[0]==value && board[3]==value && board[6]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[1]==value && board[4]==value && board[7]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[2]==value && board[5]==value && board[8]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[0]==value && board[4]==value && board[8]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		if(board[2]==value && board[4]==value && board[6]==value){
-	  			winner=1;
+	  			winner=2;
 	  		}
 	  		currentPlayer=challenger;
   		}
