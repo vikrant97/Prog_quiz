@@ -2,7 +2,7 @@ pragma solidity ^0.4.22;
 
 contract TicTacToe {
 	string public board1 = "000000000";
-	bytes32 public board = bytes32(board1);
+	bytes32 public board = "000000000";
 	uint32 public gameField = uint32(0);
 	address public challenger;
 	address public opponent;
@@ -37,12 +37,12 @@ contract TicTacToe {
   		require(board[3*x+y]=="0");
   		require(currentPlayer==msg.sender);
   		require(isopp==1);
-  		bytes32 value;
-	  	uint index=3*x+y;
+  		bytes1 value;
+	  	uint8 index=3*x+y;
   		if(msg.sender==challenger){
   			turnCount++;
 	  		value="x";
-	  		board[index]=bytes32(value);
+	  		board[index]=value;
 	  		if(board[0]==value && board[1]==value && board[2]==value){
 	  			winner=1;
 	  		}
@@ -72,7 +72,6 @@ contract TicTacToe {
   		
   		if(msg.sender==opponent){
   			turnCount++;
-	  		uint index=3*x+y;
 	  		board[index]="O";
 	  		value="O";
 	  		if(board[0]==value && board[1]==value && board[2]==value){
