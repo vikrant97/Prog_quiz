@@ -1,9 +1,7 @@
-pragma solidity ^0.4.22;
+pragma solidity ^0.4.24;
 
 contract TicTacToe {
-	string public board1 = "000000000";
-	bytes32 public board = "000000000";
-	uint32 public gameField = uint32(0);
+    mapping(uint=>uint) board;
 	address public challenger;
 	address public opponent;
 
@@ -12,14 +10,23 @@ contract TicTacToe {
 
 	address turn;
 	uint8 public turnCount = 1;
-	address public winner;
+	uint8 public winner;
 	address public currentPlayer;
 	uint public timeAtLastTurn = now;
 	uint isopp = 0;
 
-	constructor(address _owner) public {
+	constructor( ) public {
         challenger=msg.sender;
         currentPlayer=challenger;
+        board[0]=0;
+        board[1]=0;
+        board[2]=0;
+        board[3]=0;
+        board[4]=0;
+        board[5]=0;
+        board[6]=0;
+        board[7]=0;
+        board[8]=0;
   	}
 
   	function getopponenet() public{
@@ -28,21 +35,19 @@ contract TicTacToe {
   		isopp =1;
   	}
 
-  	function playerMove (uint8 x, uint8 y) public{
-
+  	function playerMove (uint8 x, uint8 y) public returns(uint){
   		require(winner==0);
   		require(turnCount<=9);
   		require(3*x+y<=8);
   		require(3*x+y>=0);
-  		require(board[3*x+y]=="0");
+  		require(board[3*x+y]==0);
   		require(currentPlayer==msg.sender);
   		require(isopp==1);
-  		bytes1 value;
-	  	uint8 index=3*x+y;
+  		uint8 value;
   		if(msg.sender==challenger){
-  			turnCount++;
-	  		value="x";
-	  		board[index]=value;
+	  		board[3*x+y]=1;
+	  		value=1;
+	  		turnCount++;
 	  		if(board[0]==value && board[1]==value && board[2]==value){
 	  			winner=1;
 	  		}
@@ -71,9 +76,9 @@ contract TicTacToe {
   		}
   		
   		if(msg.sender==opponent){
-  			turnCount++;
-	  		board[index]="O";
-	  		value="O";
+	  		board[3*x+y]=2;
+	  		value=2;
+	  		turnCount++;
 	  		if(board[0]==value && board[1]==value && board[2]==value){
 	  			winner=2;
 	  		}
@@ -100,7 +105,6 @@ contract TicTacToe {
 	  		}
 	  		currentPlayer=challenger;
   		}
-
+  		return winner;
   	}
-
 }
